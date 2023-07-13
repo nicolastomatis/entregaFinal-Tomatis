@@ -1,7 +1,7 @@
-#Primer pre entrega para el curso de JavaScript de CoderHouse
+Primer pre entrega para el curso de JavaScript de CoderHouse
 
-###Profesor: Alejandro Di Stefano
+Profesor: Alejandro Di Stefano
 
-###Tutor: Valeria Lustres
+Tutor: Valeria Lustres
 
-###Alumno: Nicolás Tomatis
+Alumno: Nicolás Tomatis

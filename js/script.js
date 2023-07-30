@@ -54,27 +54,58 @@ function calcularTotal(subtotal, pagarIVA) {
     }
 }
 
-let tipoPublicidad = seleccionarTipoPublicidad();
-let cantidadPublicidades = ingresarCantidadPublicidades();
-let precioPublicidad = ingresarPrecioPublicidad();
-let subtotal = cantidadPublicidades * precioPublicidad;
-let pagarIVA = preguntarPagarIVA();
-let total = calcularTotal(subtotal, pagarIVA);
+let publicidades = [];
 
-for (let i = 1; i <= cantidadPublicidades; i++) {
-    console.log("Publicidad " + i + "\n" + "Tipo: " + tipoPublicidad + "\n" + "Precio: $" + precioPublicidad);
+function agregarPublicidad() {
+    let tipoPublicidad = seleccionarTipoPublicidad();
+    let cantidadPublicidades = ingresarCantidadPublicidades();
+    let precioPublicidad = ingresarPrecioPublicidad();
+
+    // Creamos un objeto de publicidad para cada cantidad ingresada y lo agregamos al arreglo
+    for (let i = 0; i < cantidadPublicidades; i++) {
+        let publicidad = {
+            tipo: tipoPublicidad,
+            cantidad: 1, // Cada objeto representa una cantidad individual
+            precio: precioPublicidad
+        };
+        publicidades.push(publicidad);
+    }
 }
 
-console.log("Subtotal: $" + subtotal);
+function preguntarAgregarMasPublicidades() {
+    let respuesta;
+    do {
+        respuesta = prompt('¿Desea agregar otra publicidad? Seleccione:\n1. Sí\n2. No');
+    } while (respuesta !== '1' && respuesta !== '2');
+    return respuesta === '1';
+}
 
-if (pagarIVA) {
-    let impuesto = subtotal * 0.21;
-    console.log("IVA: $" + impuesto);
+do {
+    agregarPublicidad();
+} while (preguntarAgregarMasPublicidades());
+
+// Agregar el mensaje de resultado
+console.log(`¡Registro de publicidades finalizado!\nTotal de publicidades: ${publicidades.length}`);
+
+let subtotalTotal = publicidades.reduce((total, publicidad) => total + publicidad.cantidad * publicidad.precio, 0);
+let pagarIVATotal = preguntarPagarIVA();
+let totalTotal = calcularTotal(subtotalTotal, pagarIVATotal);
+
+// Mostramos el detalle de todas las publicidades
+for (let i = 0; i < publicidades.length; i++) {
+    let publicidad = publicidades[i];
+    console.log(`Publicidad ${i + 1}\nTipo: ${publicidad.tipo}\nCantidad: ${publicidad.cantidad}\nPrecio: $${publicidad.precio}`);
+}
+
+console.log(`Subtotal: $${subtotalTotal}`);
+
+if (pagarIVATotal) {
+    let impuestoTotal = subtotalTotal * 0.21;
+    console.log(`IVA: $${impuestoTotal}`);
 } else {
-    console.log("IVA: $ 0");
+    console.log("IVA: $0");
 }
 
-console.log("Total: $" + total);
+console.log(`Total: $${totalTotal}`);
 
-
-
+console.log(`¡Gracias por usar nuestro servicio!`);

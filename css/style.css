@@ -142,6 +142,22 @@ h1 {
 }
 
 }
+@media print {
+    .registroPublicidad {
+        display: none;
+    }
+    .listadoDePublicidades{
+        width: 100%;
+        margin: 0;
+    }
+    .boton {
+        display: none;
+    }
+    html {
+        margin: 0;
+    }
+
+}
 
 /* FIN MEDIA QUERY 1024 */
 /* MEDIA QUERY 768 */

@@ -115,6 +115,8 @@ function mostrarRecibo() {
     total.innerText = `$${totalTotal.toFixed(2)}`;
 }
 
+// Limpio los datos y reseteo el arreglo para volver a empezar
+
 function limpiarTabla() {
     publicidades.splice(0, publicidades.length);
     const tablaRecibo = document.getElementById('tablaRecibo').getElementsByTagName('tbody')[0];
@@ -134,6 +136,8 @@ function limpiarTabla() {
     ivaActivo = false;
 }
 
+// Cambia el estado de agregar IVA o eliminarlo
+
 function cambiarIVA() {
     const botonIVA = document.getElementById('botonIVA');
     const iva = document.getElementById('iva');
@@ -152,4 +156,10 @@ function cambiarIVA() {
 
     ivaActivo = !ivaActivo;
     mostrarRecibo();
+}
+
+// Imprime el listado de publicidades con su respectivo valor
+
+function imprimir() {
+    window.print()
 }

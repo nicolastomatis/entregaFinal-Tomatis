@@ -148,13 +148,11 @@ h1 {
     }
     .listadoDePublicidades{
         width: 100%;
-        margin: 0;
+        margin: 30px;
+        padding: 50px;
     }
     .boton {
         display: none;
-    }
-    html {
-        margin: 0;
     }
 
 }

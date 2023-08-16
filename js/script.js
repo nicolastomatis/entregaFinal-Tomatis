@@ -178,6 +178,7 @@ abrirModalButton.addEventListener('click', () => {
 function cerrarModal() {
     modal.style.display = 'none';
     document.body.style.overflow = 'auto'; // Desbloquea el scroll
+    mostrarDatosAnuncianteSeleccionado(); // Agregar esta línea
 }
 
 // Funcion para agregar nuevos anunciantes 

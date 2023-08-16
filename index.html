@@ -10,34 +10,81 @@
 </head>
 
 <body>
-    <div class="registroPublicidad">
-        <h1>Registro de Publicidades</h1>
-        <form id="formulario" class="formularioIngreso">
-            <div class="campo">
-                <label for="tipo">Tipo de publicidad:</label>
-                <select id="tipo" name="tipo">
-                    <option value="Cuarto de página">Cuarto de página</option>
-                    <option value="Media página">Media página</option>
-                    <option value="Página completa">Página completa</option>
-                </select>
+    <h1 id="registroPubli">Registro de Publicidades</h1>
+
+    <div class="registroAnunciantes">
+        <div class="campo"> 
+        <label for="tipo">Anunciante:</label>
+            <select id="selectAnunciantes">
+                <option value="-1">Selecciona un anunciante</option>
+            </select>
+        </div>
+        <button id="abrirModal">Agregar Anunciante</button>
+
+            <div class="registroPublicidad">
+                <form id="formulario" class="formularioIngreso">
+                    <div class="campo">
+                        <label for="tipo">Tipo de publicidad:</label>
+                        <select id="tipo" name="tipo">
+                            <option value="Cuarto de página">Cuarto de página</option>
+                            <option value="Media página">Media página</option>
+                            <option value="Página completa">Página completa</option>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label for="cantidad">Cantidad de publicidades:</label>
+                        <input type="number" id="cantidad" name="cantidad" required>
+                    </div>
+                    <div class="campo">
+                        <label for="precio">Precio de cada publicidad:</label>
+                        <input type="number" step="0.01" id="precio" name="precio" required>
+                    </div>
+                    <div>
+                        <label>&nbsp;</label>
+                        <button type="button" class="agregar" onclick="validarYAgregarPublicidad()">Agregar</button>
+                    </div>
+                </form>
             </div>
-            <div class="campo">
-                <label for="cantidad">Cantidad de publicidades:</label>
-                <input type="number" id="cantidad" name="cantidad" required>
+    </div>
+    <div id="modal" class="modal">
+        <div class="modal-contenido">
+            <div class="registroAnunciantes">
+                <div class="campo">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombreAnunciante" placeholder="Nombre del anunciante">
+                </div>
+                <div class="campo">
+        
+                    <label for="direccion">Dirección:</label>
+                    <input type="text" id="direccionAnunciante" placeholder="Dirección">
+                </div>
+                <div class="campo">
+        
+                    <label for="localidad">Localidad:</label>
+                    <input type="text" id="localidadAnunciante" placeholder="Localidad">
+                </div>
+                <div class="campo">
+        
+                    <label for="correo">Correo Electrónico:</label>
+                    <input type="text" id="correoAnunciante" placeholder="Correo electrónico">
+                </div>
+                
+                <div class="botones">
+                    <button class="agregar" onclick="validarYAgregarAnunciante()">Agregar Anunciante</button>
+                    <button class="cancelar" onclick="cerrarModal()">Cancelar</button>
+                </div>
+                
             </div>
-            <div class="campo">
-                <label for="precio">Precio de cada publicidad:</label>
-                <input type="number" step="0.01" id="precio" name="precio" required>
-            </div>
-            <div class="campo">
-                <label>&nbsp;</label>
-                <button type="button" class="agregarPublicidad" onclick="validarYAgregarPublicidad()">Agregar Publicidad</button>
-            </div>
-        </form>
+        </div>
+    </div>
+
+    <h1>Listado de Publicidades</h1>
+
+    <div id="datosAnunciante" class="datosAnunciante">
+        <!-- Aquí se mostrarán los datos del anunciante seleccionado -->
     </div>
 
     <div class="listadoDePublicidades">
-        <h1>Listado de Publicidades</h1>
         <table id="tablaRecibo">
             <thead>
                 <tr>
@@ -49,7 +96,7 @@
                 </tr>
             </thead>
             <tbody>
-            <!-- agrego los diferentes tr que se vayan generando -->
+                <!-- agrego los diferentes tr que se vayan generando -->
             </tbody>
             <tfoot>
                 <tr>
@@ -71,11 +118,13 @@
         </table>
         <div class="botonera">
             <button class="boton" type="button" id="botonIVA" onclick="cambiarIVA()">Agregar IVA</button>
-            <button class="boton" type="button" onclick="limpiarTabla()">Limpiar detalle</button> 
-            <button class="boton" type="button" onclick="imprimir()">Imprimir</button> 
+            <button class="boton" type="button" onclick="limpiarTabla()">Limpiar detalle</button>
+            <button class="boton" type="button" onclick="imprimir()">Imprimir</button>
         </div>
 
     </div>
 </body>
-<script src="./js/java.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="./js/script.js"></script>
+
 </html>

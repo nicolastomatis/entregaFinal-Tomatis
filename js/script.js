@@ -13,7 +13,7 @@ function validarYAgregarPublicidad() {
             'Por favor, complete los campos de "Cantidad de publicidades" y "Valor de publicidades" antes de agregar.?',
             'warning'
         );
-        return;        
+        return;
     }
     agregarPublicidad();
 }
@@ -43,6 +43,8 @@ function agregarPublicidad() {
     } else {
         publicidades.push(publicidad);
     }
+
+    guardarPublicidadesEnLocalStorage();
 
     document.getElementById('cantidad').value = '';
     document.getElementById('precio').value = '';
@@ -86,13 +88,15 @@ function mostrarRecibo() {
         let publicidad = publicidadesFiltradas[i];
         const precioTotal = publicidad.cantidad * publicidad.precio;
         detalle += `
-            <tr>
-                <td>${i + 1}</td>
-                <td>${publicidad.tipo}</td>
-                <td>${publicidad.cantidad}</td>
-                <td>$${publicidad.precio.toFixed(2)}</td>
-                <td>$${precioTotal.toFixed(2)}</td>
-            </tr>
+        <tr>
+        <td>${i + 1}</td>
+        <td>${publicidad.tipo}</td>
+        <td>${publicidad.cantidad}</td>
+        <td>$${publicidad.precio.toFixed(2)}</td>
+        <td>$${precioTotal.toFixed(2)}</td>
+        <td><button class="modificarPublicidad" onclick="editarPublicidad(${i})">Modificar</button>
+        <button class="eliminarPublicidad" onclick="eliminarPublicidad(${i})">X</button></td>
+    </tr>
         `;
     }
 
@@ -216,6 +220,8 @@ function validarYAgregarAnunciante() {
     localStorage.setItem('anunciantes', JSON.stringify(anunciantes));
     actualizarSelectAnunciantes();
 
+    mostrarDatosAnuncianteSeleccionado();
+
     cerrarModal();
 
     Swal.fire({
@@ -261,19 +267,126 @@ selectAnunciantes.addEventListener('change', mostrarDatosAnuncianteSeleccionado)
 
 function mostrarDatosAnuncianteSeleccionado() {
     const indiceSeleccionado = selectAnunciantes.value;
-    const anuncianteSeleccionado = anunciantes[indiceSeleccionado];
 
-    const datosAnuncianteDiv = document.getElementById('datosAnunciante');
-    datosAnuncianteDiv.innerHTML = `
-        <p><strong>Nombre:</strong> ${anuncianteSeleccionado.nombre}</p>
-        <p><strong>Dirección:</strong> ${anuncianteSeleccionado.direccion}</p>
-        <p><strong>Localidad:</strong> ${anuncianteSeleccionado.localidad}</p>
-        <p><strong>Correo Electrónico:</strong> ${anuncianteSeleccionado.correo}</p>
-    `;
+    // Comprobar si se ha seleccionado un anunciante válido
+    if (indiceSeleccionado >= 0 && anunciantes[indiceSeleccionado]) {
+        const anuncianteSeleccionado = anunciantes[indiceSeleccionado];
+        const datosAnuncianteDiv = document.getElementById('datosAnunciante');
+
+        // Verificar que el objeto anunciante seleccionado tenga la propiedad 'nombre'
+        if (anuncianteSeleccionado.nombre) {
+            datosAnuncianteDiv.innerHTML = `
+                <p><strong>Nombre:</strong> ${anuncianteSeleccionado.nombre}</p>
+                <p><strong>Dirección:</strong> ${anuncianteSeleccionado.direccion}</p>
+                <p><strong>Localidad:</strong> ${anuncianteSeleccionado.localidad}</p>
+                <p><strong>Correo Electrónico:</strong> ${anuncianteSeleccionado.correo}</p>
+            `;
+        } else {
+            datosAnuncianteDiv.innerHTML = '<p>Los datos del anunciante son inválidos.</p>';
+        }
+    } else {
+        // Manejar el caso en que no se ha seleccionado un anunciante válido
+        const datosAnuncianteDiv = document.getElementById('datosAnunciante');
+        datosAnuncianteDiv.innerHTML = '<p>Seleccione un anunciante válido.</p>';
+    }
 }
 
+function cargarDatosJSONLocal() {
+    fetch('./js/anunciantes.json') // Ajusta la ruta al archivo JSON según su ubicación
+        .then(response => response.json())
+        .then(data => {
+            // Asignar los datos a las variables correspondientes
+            anunciantes = data.anunciantes;
+            actualizarSelectAnunciantes();
+            mostrarDatosAnuncianteSeleccionado();
+        })
+        .catch(error => {
+            console.error('Error al cargar el archivo JSON:', error);
+        });
+}
+
+function guardarPublicidadesEnLocalStorage() {
+    localStorage.setItem('publicidades', JSON.stringify(publicidades));
+}
+
+function cargarPublicidadesDesdeLocalStorage() {
+    const publicidadesGuardadas = localStorage.getItem('publicidades');
+    if (publicidadesGuardadas) {
+        publicidades = JSON.parse(publicidadesGuardadas);
+        mostrarRecibo(); // Mostrar las publicidades almacenadas automáticamente
+    }
+}
+
+function editarPublicidad(indice) {
+    const nuevaCantidadInput = document.getElementById('cantidad');
+    const nuevoPrecioInput = document.getElementById('precio');
+
+    // Obtén los valores actuales de la publicidad seleccionada
+    const publicidadSeleccionada = publicidades[indice];
+
+    // Llena los campos del formulario con los valores actuales de la publicidad
+    nuevaCantidadInput.value = publicidadSeleccionada.cantidad;
+    nuevoPrecioInput.value = publicidadSeleccionada.precio;
+
+    // Cambia el botón "Agregar" a "Guardar Cambios" para indicar que estás editando
+    const botonAgregar = document.querySelector('.agregar');
+    botonAgregar.innerText = 'Actualizar';
+
+    // Agrega un evento para manejar la edición
+    botonAgregar.onclick = function () {
+        const nuevaCantidad = parseInt(nuevaCantidadInput.value);
+        const nuevoPrecio = parseFloat(nuevoPrecioInput.value);
+
+        if (!isNaN(nuevaCantidad) && !isNaN(nuevoPrecio)) {
+            // Actualiza los valores de la publicidad seleccionada
+            publicidadSeleccionada.cantidad = nuevaCantidad;
+            publicidadSeleccionada.precio = nuevoPrecio;
+
+            // Restaura el botón a su estado original
+            botonAgregar.innerText = 'Agregar';
+
+            // Limpia los campos del formulario
+            nuevaCantidadInput.value = '';
+            nuevoPrecioInput.value = '';
+
+            guardarPublicidadesEnLocalStorage(); // Actualiza el Local Storage
+            mostrarRecibo(); // Vuelve a mostrar el recibo con los cambios
+        } else {
+            Swal.fire(
+                'Atención',
+                'Por favor, complete los campos de "Cantidad de publicidades" y "Valor de publicidades" antes de agregar.?',
+                'warning'
+            );
+        }
+    };
+}
+
+// Función para eliminar una publicidad por su índice en el arreglo
+function eliminarPublicidad(indice) {
+    if (
+        Swal.fire({
+            title: '¿Desea eliminar la publicidad?',
+            confirmButtonText: 'Eliminar publicidad',
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.isConfirmed) {            
+        publicidades.splice(indice, 1); // Elimina la publicidad del arreglo
+        guardarPublicidadesEnLocalStorage(); // Actualiza el Local Storage
+        mostrarRecibo(); // Vuelve a mostrar el recibo
+                Swal.fire('La publicidad ha sido eliminada', '', 'info')
+            }
+        })
+
+
+    ) {
+    }
+}
+
+
 window.onload = function () {
-    cargarAnunciantesDesdeLocalStorage();
+    cargarDatosJSONLocal(); // Cargar datos JSON local
+    cargarAnunciantesDesdeLocalStorage(); // Cargar anunciantes desde LocalStorage
+    cargarPublicidadesDesdeLocalStorage(); // Cargar publicidades desde LocalStorage
     actualizarSelectAnunciantes();
     mostrarDatosAnuncianteSeleccionado();
 };

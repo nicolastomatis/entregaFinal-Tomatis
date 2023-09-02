@@ -1,4 +1,4 @@
-Segunda pre entrega para el curso de JavaScript de CoderHouse
+Entrega Final para el curso de JavaScript de CoderHouse
 
 Profesor: Alejandro Di Stefano
 

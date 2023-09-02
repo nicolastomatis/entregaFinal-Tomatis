@@ -262,14 +262,21 @@ td {
 
 .datosAnunciante {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
 }
 .datosAnunciante p {
     font-size: 2rem;
-    margin: 10px;
+    margin-bottom: 2px;
 }
 .datosAnunciante p strong {
     color: #1660A7;
+}
+.eliminarPublicidad {
+    background-color: #c5330e;
+    color: white;
+    border: 2px solid #c5330e;
+
 }
 
 /* MEDIA QUERY 1440 */
@@ -328,6 +335,10 @@ td {
     }
 
 }
+@page {
+    size: auto; /* Puedes ajustar el tamaño de la página según tus necesidades */
+    margin-top: 20mm; /* Establece los márgenes a 0 para eliminar el encabezado y el pie de página */
+}
 
 @media print {
     .registroPublicidad {
@@ -336,8 +347,16 @@ td {
 
     .listadoDePublicidades {
         width: 100%;
-        margin: 50px 0;
-        padding: 30px;
+        margin: 0;
+        padding: 0;
+        background-color: #fff;
+    }
+    .tablaRecibo {
+        margin: 0px;
+        width: 100%;
+    }
+    h1 {
+        display: none;
     }
 
     .boton {
@@ -350,6 +369,13 @@ td {
     #registroPubli {
         display: none;
     }
+    
+.modificarPublicidad {
+display: none;
+}
+.eliminarPublicidad {
+    display: none;
+}
 
 }
 

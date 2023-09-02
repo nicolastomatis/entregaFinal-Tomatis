@@ -1,0 +1,34 @@
+{
+  "anunciantes": [
+    {
+      "nombre": "Nicolás",
+      "direccion": "12º 345",
+      "localidad": "La Plata",
+      "correo": "correo1@fbpba.org.ar"
+    },
+    {
+      "nombre": "Elizabeth",
+      "direccion": "67º 890",
+      "localidad": "La Plata",
+      "correo": "correo2@fbpba.org.ar"
+    },
+    {
+      "nombre": "Francisco",
+      "direccion": "12º 345",
+      "localidad": "La Plata",
+      "correo": "correo3@fbpba.org.ar"
+    },
+    {
+      "nombre": "Alejandra",
+      "direccion": "67º 890",
+      "localidad": "La Plata",
+      "correo": "correo4@fbpba.org.ar"
+    },
+    {
+      "nombre": "Sofía",
+      "direccion": "12º 345",
+      "localidad": "La Plata",
+      "correo": "correo5@fbpba.org.ar"
+    }
+  ]
+}
